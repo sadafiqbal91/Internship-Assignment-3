@@ -1,28 +1,48 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-
-const employeeRoutes = require('./routes/employeeRoutes');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Middleware
-app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/employees', employeeRoutes);
+// ✅ MongoDB URI from .env
+const uri = process.env.MONGO_URI;
 
-// Database Connection
-mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-    console.log('Connected to MongoDB successfully.');
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
-})
-.catch((err) => {
-    console.error('Failed to connect to MongoDB', err);
+// ✅ MongoDB Client
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
 });
+
+// ✅ Connect to MongoDB
+async function run() {
+  try {
+    await client.connect();
+    console.log("✅ MongoDB Connected");
+
+    const db = client.db("employee-db");
+
+    // Test route
+    app.get('/', (req, res) => {
+      res.send("Backend is running 🚀");
+    });
+
+    // ✅ Server start (only listen if not in production, e.g., Vercel)
+    const PORT = process.env.PORT || 5000;
+    if (process.env.NODE_ENV !== 'production') {
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+run();
+
+module.exports = app;
