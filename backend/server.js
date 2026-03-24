@@ -18,10 +18,22 @@ async function run() {
 }
 run();
 
-// Routes
+// Import employee routes
+const employeeRoutes = require('./routes/employeeRoutes');
+
+// Use employee routes
+app.use('/employee', employeeRoutes);
+
+// Main route
 app.get('/', (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// LAST LINE (Vercel compatible)
+// Export for Vercel
 module.exports = app;
+
+// Local testing only
+const PORT = process.env.PORT || 5001;
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
