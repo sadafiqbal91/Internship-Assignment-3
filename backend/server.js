@@ -1,39 +1,25 @@
 require('dotenv').config();
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
-// MongoDB connection
-const client = new MongoClient(process.env.MONGO_URI);
+// ✅ MongoDB connect
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected ✅"))
+  .catch(err => console.log(err));
 
-async function run() {
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB ✅");
-  } catch (error) {
-    console.error(error);
-  }
-}
-run();
-
-// Import employee routes
+// ✅ Routes
 const employeeRoutes = require('./routes/employeeRoutes');
+app.use('/employees', employeeRoutes);
 
-// Use employee routes
-app.use('/employee', employeeRoutes);
-
-// Main route
+// Test route
 app.get('/', (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// Export for Vercel
 module.exports = app;
-
-// Local testing only
-const PORT = process.env.PORT || 5001;
-if (require.main === module) {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
