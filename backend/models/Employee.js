@@ -1,9 +1,25 @@
-const express = require('express');
-const router = express.Router();
+const mongoose = require('mongoose');
 
-// Example route
-router.get('/', (req, res) => {
-  res.send("Employee route working 🚀");
+const employeeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    trim: true
+  },
+  role: {
+    type: String,
+    required: [true, 'Role is required'],
+    trim: true
+  },
+  salary: {
+    type: Number,
+    required: [true, 'Salary is required'],
+    min: 0
+  }
+}, {
+  timestamps: true
 });
 
-module.exports = router;
+const Employee = mongoose.model('Employee', employeeSchema);
+
+module.exports = Employee;
