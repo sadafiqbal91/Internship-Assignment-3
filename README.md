@@ -2,6 +2,10 @@
 
 Welcome to the full-stack Employee Management System! This project allows you to seamlessly map, add, edit, and delete employee records using a modern React frontend and a Node.js Express backend. 
 
+## 🌍 Live Demo
+- **Frontend / Live Website**: [https://internship-assignment-3-w72q.vercel.app/](https://internship-assignment-3-w72q.vercel.app/)
+- **Backend API**: [https://internship-assignment-3-drtz.vercel.app/](https://internship-assignment-3-drtz.vercel.app/)
+
 ## 🚀 Tech Stack
 - **Frontend**: React (Vite), React Router DOM, Axios, Lucide-React, Custom CSS
 - **Backend**: Node.js, Express, Mongoose, CORS, Dotenv
