@@ -1,16 +1,9 @@
 import axios from "axios";
 
-// Backend URL (Vercel deployed)
-const API_URL = "https://sadafiqbal-internship3.vercel.app/employees";
+const API = axios.create({
+  baseURL: "http://localhost:5003/employees", // ✅ updated port
+});
 
-// Get all employees
-export const getEmployees = () => axios.get(API_URL);
-
-// Add new employee
-export const addEmployee = (data) => axios.post(API_URL, data);
-
-// Delete employee
-export const deleteEmployee = (id) => axios.delete(`${API_URL}/${id}`);
-
-// Update employee
-export const updateEmployee = (id, data) => axios.put(`${API_URL}/${id}`, data);
+export const getEmployees = () => API.get("/");
+export const addEmployee = (data) => API.post("/", data);
+export const deleteEmployee = (id) => API.delete(`/${id}`);
