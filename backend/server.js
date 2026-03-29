@@ -5,32 +5,65 @@ const cors = require('cors');
 
 const app = express();
 
+// ✅ FIXED CORS (ALL PORTS ALLOWED)
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000', 'https://sadafiqbal-internship3.vercel.app'],
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174", // ✅ IMPORTANT ADD
+    "http://localhost:5177",
+    "http://localhost:3000",
+    "https://internship-assignment-3-w72q.vercel.app" // ✅ Deployed Frontend
+  ],
   credentials: true
 }));
+
 app.use(express.json());
 
 // ✅ MongoDB connect
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected ✅"))
-  .catch(err => {
-    console.error("MongoDB connection error:", err);
-  });
+  .catch(err => console.error("MongoDB connection error:", err));
 
-// ✅ Routes
-const employeeRoutes = require('./routes/employeeRoutes');
-app.use('/employees', employeeRoutes);
+// ✅ Schema
+const employeeSchema = new mongoose.Schema({
+  name: String,
+  role: String,
+  salary: Number
+}, { timestamps: true });
 
-// Test route
-app.get('/', (req, res) => {
-  res.send("Backend is running 🚀");
+const Employee = mongoose.model('Employee', employeeSchema);
+
+// ✅ GET
+app.get('/employees', async (req, res) => {
+  const data = await Employee.find();
+  res.json(data);
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
+// ✅ ADD
+app.post('/employees', async (req, res) => {
+  const emp = new Employee(req.body);
+  await emp.save();
+  res.json(emp);
+});
+
+// ✅ UPDATE
+app.put('/employees/:id', async (req, res) => {
+  const updated = await Employee.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { returnDocument: 'after' }
+  );
+  res.json(updated);
+});
+
+// ✅ DELETE
+app.delete('/employees/:id', async (req, res) => {
+  await Employee.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted ✅" });
+});
+
+// ✅ Server
+const PORT = process.env.PORT || 5003;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} 🚀`);
 });
-
-module.exports = app;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5003/employees", // ✅ updated port
+  baseURL: "https://internship-assignment-3-drtz.vercel.app/employees", // ✅ updated to Vercel backend
 });
 
 export const getEmployees = () => API.get("/");

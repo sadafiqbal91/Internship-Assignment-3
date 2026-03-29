@@ -14,7 +14,7 @@ export default function EmployeeList() {
   // Fetch employees
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("http://localhost:5003/employees");
+      const res = await axios.get("https://internship-assignment-3-drtz.vercel.app/employees");
       setEmployees(res.data);
     } catch (err) {
       console.error("Error fetching employees:", err);
@@ -29,7 +29,7 @@ export default function EmployeeList() {
     }
 
     try {
-      await axios.post("http://localhost:5003/employees", {
+      await axios.post("https://internship-assignment-3-drtz.vercel.app/employees", {
         name,
         role,
         salary,
@@ -60,7 +60,7 @@ export default function EmployeeList() {
     }
 
     try {
-      await axios.put(`http://localhost:5003/employees/${editingId}`, {
+      await axios.put(`https://internship-assignment-3-drtz.vercel.app/employees/${editingId}`, {
         name,
         role,
         salary,
@@ -79,7 +79,7 @@ export default function EmployeeList() {
   // Delete employee
   const deleteEmp = async (id) => {
     try {
-      await axios.delete(`http://localhost:5003/employees/${id}`);
+      await axios.delete(`https://internship-assignment-3-drtz.vercel.app/employees/${id}`);
       fetchEmployees();
     } catch (err) {
       console.error("Error deleting employee:", err);
