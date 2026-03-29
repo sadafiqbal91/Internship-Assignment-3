@@ -7,13 +7,7 @@ const app = express();
 
 // ✅ FIXED CORS (ALL PORTS ALLOWED)
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "http://localhost:5174", // ✅ IMPORTANT ADD
-    "http://localhost:5177",
-    "http://localhost:3000",
-    "https://internship-assignment-3-w72q.vercel.app" // ✅ Deployed Frontend
-  ],
+  origin: true, // ✅ Allows ANY origin. Solves the Vercel dynamic URL issue.
   credentials: true
 }));
 
