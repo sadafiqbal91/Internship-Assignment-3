@@ -14,7 +14,8 @@ app.use(cors({
 app.use(express.json());
 
 // ✅ MongoDB connect
-mongoose.connect(process.env.MONGO_URI)
+const dbURI = process.env.MONGO_URI || "mongodb+srv://Backendprofile:abc12345@cluster0.3kjsh7y.mongodb.net/employee-db?retryWrites=true&w=majority&tls=true";
+mongoose.connect(dbURI, { serverSelectionTimeoutMS: 5000 })
   .then(() => console.log("MongoDB Connected ✅"))
   .catch(err => console.error("MongoDB connection error:", err));
 
